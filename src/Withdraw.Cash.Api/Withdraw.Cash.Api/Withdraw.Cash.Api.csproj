@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="FluentValidation" Version="12.0.0-preview1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0-preview1" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Withdraw.Cash.Contracts\Withdraw.Cash.Contracts.csproj" />
+    <ProjectReference Include="..\Withdraw.Cash.Domain\Withdraw.Cash.Domain.csproj" />
+    <ProjectReference Include="..\Withdraw.Cash.Application\Withdraw.Cash.Application.csproj" />
+  </ItemGroup>
+
+</Project>

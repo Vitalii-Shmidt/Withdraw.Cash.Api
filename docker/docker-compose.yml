@@ -1,0 +1,73 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - withdraw_network
+
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: br
+      POSTGRES_PASSWORD: 12
+      POSTGRES_DB: cash_withdraw_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - withdraw_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "8080:80"
+    networks:
+      - withdraw_network
+    depends_on:
+      - db
+    restart: always
+  api:
+    build:
+      context: ../Withdraw.Cash.Api\Withdraw.Cash.Api
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+    networks:
+      - withdraw_network
+    restart: always
+    volumes:
+      - ./server:/app
+      - /app/obj/
+      - /app/bin/
+      - /app/out/
+
+
+  backend:
+    build:
+      context: ../Withdraw.Cash.Backend/Withdraw.Cash.Backend
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - withdraw_network
+    restart: always
+
+
+networks:
+  withdraw_network:
+    driver: bridge
+
+volumes:
+  postgres_data: {}

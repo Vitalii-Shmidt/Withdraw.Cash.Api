@@ -1,0 +1,6 @@
+@Withdraw.Cash.Api_HostAddress = http://localhost:5201
+
+GET {{Withdraw.Cash.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
